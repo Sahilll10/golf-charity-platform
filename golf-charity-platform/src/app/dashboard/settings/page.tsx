@@ -53,7 +53,9 @@ export default function SettingsPage() {
     return <div className="flex items-center justify-center py-24"><Loader2 size={28} className="text-brand-400 animate-spin" /></div>
   }
 
-  const planInfo = subscription?.plan ? PLANS[subscription.plan as 'monthly' | 'yearly'] : null
+const planInfo = subscription?.plan
+  ? PLANS.find(p => p.interval === subscription.plan)
+  : null
   const isActive = subscription?.status === 'active'
 
   return (
