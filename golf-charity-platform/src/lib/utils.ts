@@ -57,3 +57,16 @@ export function getTimeUntilDraw(): { days: number; hours: number; minutes: numb
 
   return { days, hours, minutes, seconds }
 }
+
+export const PLANS = [
+  {
+    name: "Monthly",
+    price: 500, // ₹5
+    interval: "month"
+  },
+  {
+    name: "Yearly",
+    price: 5000, // ₹50
+    interval: "year"
+  }
+]
