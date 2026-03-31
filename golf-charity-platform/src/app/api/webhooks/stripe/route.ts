@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createAdminClient } from '@/lib/supabase/server'
 import { calculatePrizePool } from '@/lib/draw-engine'
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
@@ -123,5 +125,3 @@ export async function POST(req: NextRequest) {
 
   return new NextResponse('ok', { status: 200 })
 }
-
-export const config = { api: { bodyParser: false } }
