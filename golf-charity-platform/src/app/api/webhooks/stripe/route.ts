@@ -72,11 +72,18 @@ export async function POST(req: NextRequest) {
           const { data: sub } = await supabase
             .from('subscriptions').select('charity_id').eq('user_id', userId).single()
           if (sub?.charity_id) {
-            await supabase.rpc('increment_charity_raised', {
-              charity_id: sub.charity_id,
-              amount: pool.charityPot,
-            }).catch(() => {
-              // Fallback if RPC doesn't exist: direct update
+const { error } = await supabase.rpc('increment_charity_raised', {
+  charity_id: sub.charity_id,
+  amount: pool.charityPot,
+})
+
+if (error) {
+  // fallback if RPC fails
+  await supabase
+    .from('charities')
+    .update({ total_raised: pool.charityPot })
+    .eq('id', sub.charity_id)
+}              // Fallback if RPC doesn't exist: direct update
               supabase.from('charities')
                 .update({ total_raised: supabase.rpc('total_raised') })
                 .eq('id', sub.charity_id)
